@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-workflow-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-workflow-frontend
+  template:
+    metadata:
+      labels:
+        app: ai-workflow-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: ai-workflow-frontend:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-workflow-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-workflow-backend
+  template:
+    metadata:
+      labels:
+        app: ai-workflow-backend
+    spec:
+      containers:
+      - name: backend
+        image: ai-workflow-backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: database-url
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: backend-secrets
+              key: openai-api-key
