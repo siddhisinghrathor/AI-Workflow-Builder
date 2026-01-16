@@ -21,7 +21,8 @@ services:
       - ./backend:/app
     environment:
       - DATABASE_URL=postgresql://user:password@db:5432/workflow_db
-      - CHROMA_DB_PATH=/app/chroma_db
+      - CHROMA_HOST=chroma
+      - CHROMA_PORT=8000
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - GEMINI_API_KEY=${GEMINI_API_KEY}
     depends_on:
